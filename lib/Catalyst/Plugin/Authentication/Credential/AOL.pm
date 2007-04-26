@@ -76,17 +76,51 @@ sub authenticate_aol {
 1;
 __END__
 
+=for stopwords OpenID OpenAuth
+
 =head1 NAME
 
-Catalyst::Plugin::Authentication::Credential::AOL -
+Catalyst::Plugin::Authentication::Credential::AOL - AOL OpenAuth credential
 
 =head1 SYNOPSIS
 
-  use Catalyst::Plugin::Authentication::Credential::AOL;
+  use Catalyst qw/
+      Authentication
+      Authentication::Credential::AOL
+      Session
+      Session::Store::FastMmap
+      Session::State::Cookie
+  /;
+
+  MyApp->config(
+      authentication => {
+          use_session => 1, # default 1. see C::P::Authentication
+          aol => {
+              devId => 'AOL_DEVELOPER_TOKEN',
+          },
+      },
+  );
+
+  sub login_aol : local {
+      my($self, $c) = @_;
+
+      if ($c->authenticate_aol) {
+          # login succeed
+          $c->res->redirect("/");
+      }
+
+      # login failed
+  }
+
+  # in your templates
+  <a href="[% c.uri_for('/login_aol') | html %]">Sign in via AOL</a>
 
 =head1 DESCRIPTION
 
-Catalyst::Plugin::Authentication::Credential::AOL is
+Catalyst::Plugin::Authentication::Credential::AOL is a Catalyst
+Authentication credential plugin for AOL OpenAuth. Since AOL does
+OpenID you can just use OpenID credential, but OpenAuth gives more
+granular control over authentication.
 
 =head1 AUTHOR
 
@@ -99,6 +133,8 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<Catalyst::Plugin::Authentication>, L<http://dev.aol.com/openauth>
+L<Catalyst::Plugin::Authentication>,
+L<Catalyst::Plugin::Authentication::Credential::OpenID>,
+L<http://dev.aol.com/openauth>
 
 =cut
