@@ -84,6 +84,13 @@ Catalyst::Plugin::Authentication::Credential::AOL - AOL OpenAuth credential
 
 =head1 SYNOPSIS
 
+  # myapp.yaml
+  authentication:
+    aol:
+      devId: AOL_DEVELOPER_TOKEN
+
+  # MyApp.pm
+  package MyApp;
   use Catalyst qw/
       Authentication
       Authentication::Credential::AOL
@@ -92,16 +99,8 @@ Catalyst::Plugin::Authentication::Credential::AOL - AOL OpenAuth credential
       Session::State::Cookie
   /;
 
-  MyApp->config(
-      authentication => {
-          use_session => 1, # default 1. see C::P::Authentication
-          aol => {
-              devId => 'AOL_DEVELOPER_TOKEN',
-          },
-      },
-  );
-
-  sub login_aol : local {
+  # MyApp/Controller/Signin.pm
+  sub aol : Local {
       my($self, $c) = @_;
 
       if ($c->authenticate_aol) {
@@ -113,7 +112,7 @@ Catalyst::Plugin::Authentication::Credential::AOL - AOL OpenAuth credential
   }
 
   # in your templates
-  <a href="[% c.uri_for('/login_aol') | html %]">Sign in via AOL</a>
+  <a href="[% c.uri_for('/signin/aol') | html %]">Sign in via AOL</a>
 
 =head1 DESCRIPTION
 
