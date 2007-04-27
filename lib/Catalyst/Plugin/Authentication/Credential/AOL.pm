@@ -1,7 +1,7 @@
 package Catalyst::Plugin::Authentication::Credential::AOL;
 
 use strict;
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use UNIVERSAL::require;
 use JSON::Any;
